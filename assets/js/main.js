@@ -215,6 +215,7 @@ function initContactEmail() {
     });
 
     form.addEventListener('submit', (event) => {
+<<<<<<< HEAD
         event.preventDefault();
 
         if (!validateEmail()) {
@@ -237,6 +238,12 @@ function initContactEmail() {
             + encodeURIComponent('Poruka s web stranice')
             + '&body='
             + encodeURIComponent(body);
+=======
+        if (!validateEmail()) {
+            event.preventDefault();
+            input.focus();
+        }
+>>>>>>> b6ee07cb0f2f1ff38ebb2656eaeb49fda62a7b66
     });
 }
 
