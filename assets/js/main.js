@@ -12,7 +12,7 @@ function initScrollFocus() {
     const nodes = [];
 
     /**
-     * Marks one element so it can slide in from the side on scroll.
+     * Marks one element so it can fade in on scroll.
      */
     function add(node, delay) {
         if (!(node instanceof HTMLElement) || node.classList.contains('reveal')) {
@@ -49,7 +49,7 @@ function initScrollFocus() {
             entry.target.classList.add('is-inview');
             observer.unobserve(entry.target);
         });
-    }, { threshold: 0.2, rootMargin: '0px 0px -8% 0px' });
+    }, { threshold: 0.08, rootMargin: '0px 0px 4% 0px' });
 
     nodes.forEach((node) => {
         const box = node.getBoundingClientRect();
