@@ -281,7 +281,7 @@ p { margin: 0; }
 }
 
 .clients {
-    background: var(--mist);
+    background: transparent;
     border-top: 1px solid var(--line);
     border-bottom: 1px solid var(--line);
     margin-bottom: 2.6rem;
