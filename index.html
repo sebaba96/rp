@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Rijekaprojekt Energetika</title>
+    <meta name="description" content="S tradicijom duljom od 70 godina, specijalizirani smo za strojarske projekte, projektiranje toplinske i zvučne zaštite zgrada, energetske certifikate, blower door ispitivanja i nadzor nad izvođenjem strojarskih instalacija. Naša tradicija i iskustvo garantiraju kvalitetu, uštedu energije i zaštitu okoliša.">
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;500;600;700&family=Jura:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css?v=1795104885">
+        <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+        }
+    }
+    </script>
+    <script type="module" src="assets/js/hero.js"></script>
+    </head>
+<body class="page-home">
+<a class="skip-link" href="#sadrzaj">Preskoči na sadržaj</a>
+<header class="site-nav">
+    <a class="brand" href="index.html">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-text">
+            <strong>Rijekaprojekt</strong>
+            <small>Energetika</small>
+        </span>
+    </a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="glavni-izbornik">
+        <span class="nav-toggle-lines" aria-hidden="true"></span>
+        <span class="visually-hidden">Izbornik</span>
+    </button>
+    <nav id="glavni-izbornik" class="nav-links" aria-label="Glavni izbornik">
+                    <a
+                href="index.html"
+                aria-current="page"            >Početna</a>
+                    <a
+                href="o-nama.html"
+                            >O nama</a>
+                    <a
+                href="djelatnosti.html"
+                            >Djelatnosti</a>
+                    <a
+                href="kontakt.html"
+                            >Kontakt</a>
+            </nav>
+</header>
+        <main id="sadrzaj">
+    <section class="hero" aria-label="Uvod">
+        <canvas
+            id="hero-canvas"
+            data-model="STR_kotlovnica_export/result.gltf"
+            aria-label="Trodimenzionalni prikaz kotlovnice"
+        ></canvas>
+        <div class="hero-scrim" aria-hidden="true"></div>
+        <div class="hero-copy">
+            <div class="hero-copy-inner">
+                <h1>
+                    <span class="hero-lead">Tradicija i</span>
+                    <span class="hero-mark">Inovacija</span>
+                </h1>
+                <p>S tradicijom duljom od 70 godina, specijalizirani smo za strojarske projekte, projektiranje toplinske i zvučne zaštite zgrada, energetske certifikate, blower door ispitivanja i nadzor nad izvođenjem strojarskih instalacija. Naša tradicija i iskustvo garantiraju kvalitetu, uštedu energije i zaštitu okoliša.</p>
+            </div>
+        </div>
+        <div class="hero-loader" id="hero-loader">
+            <p id="hero-loader-label">Učitavanje kotlovnice</p>
+            <div class="hero-loader-track" aria-hidden="true"><span id="hero-loader-bar"></span></div>
+        </div>
+    </section>
+
+    <section class="facts" aria-label="U brojkama">
+        <ul>
+            <li>
+                <span class="facts-value">31</span>
+                <span class="facts-name">Stručnjak</span>
+            </li>
+            <li>
+                <span class="facts-value">122</span>
+                <span class="facts-name">Projekta</span>
+            </li>
+            <li>
+                <span class="facts-value">40+</span>
+                <span class="facts-name">Klijenata</span>
+            </li>
+        </ul>
+    </section>
+
+    <section class="work" aria-labelledby="work-title">
+        <div class="work-head">
+            <div>
+                <p class="eyebrow">Djelatnosti</p>
+                <h2 id="work-title">Osnovna područja rada</h2>
+            </div>
+            <a class="text-link" href="djelatnosti.html">Otvori djelatnosti</a>
+        </div>
+        <div class="card-grid">
+                                            <a class="flip-card" href="djelatnosti.html#strojarski-projekt">
+                    <span class="flip-inner">
+                        <span class="flip-face flip-front">
+                            <span class="card-index">01</span>
+                            <span class="card-title">Strojarski projekt</span>
+                        </span>
+                        <span class="flip-face flip-back" aria-hidden="true">
+                            <img src="assets/images/services/strojarski-projekt.jpg" alt="">
+                            <span class="card-caption">Strojarski projekt</span>
+                        </span>
+                    </span>
+                </a>
+                                            <a class="flip-card" href="djelatnosti.html#fizika-zgrade">
+                    <span class="flip-inner">
+                        <span class="flip-face flip-front">
+                            <span class="card-index">02</span>
+                            <span class="card-title">Fizika zgrade</span>
+                        </span>
+                        <span class="flip-face flip-back" aria-hidden="true">
+                            <img src="assets/images/services/fizika-zgrade.jpg" alt="">
+                            <span class="card-caption">Fizika zgrade</span>
+                        </span>
+                    </span>
+                </a>
+                                            <a class="flip-card" href="djelatnosti.html#energetsko-certificiranje">
+                    <span class="flip-inner">
+                        <span class="flip-face flip-front">
+                            <span class="card-index">03</span>
+                            <span class="card-title">Energetsko certificiranje</span>
+                        </span>
+                        <span class="flip-face flip-back" aria-hidden="true">
+                            <img src="assets/images/services/energetsko-certificiranje.jpg" alt="">
+                            <span class="card-caption">Energetsko certificiranje</span>
+                        </span>
+                    </span>
+                </a>
+                                            <a class="flip-card" href="djelatnosti.html#blower-door-ispitivanje">
+                    <span class="flip-inner">
+                        <span class="flip-face flip-front">
+                            <span class="card-index">04</span>
+                            <span class="card-title">Blower door ispitivanje</span>
+                        </span>
+                        <span class="flip-face flip-back" aria-hidden="true">
+                            <img src="assets/images/services/blower-door.jpg" alt="">
+                            <span class="card-caption">Blower door ispitivanje</span>
+                        </span>
+                    </span>
+                </a>
+                                            <a class="flip-card" href="djelatnosti.html#nadzor">
+                    <span class="flip-inner">
+                        <span class="flip-face flip-front">
+                            <span class="card-index">05</span>
+                            <span class="card-title">Nadzor</span>
+                        </span>
+                        <span class="flip-face flip-back" aria-hidden="true">
+                            <img src="assets/images/services/nadzor.jpg" alt="">
+                            <span class="card-caption">Nadzor</span>
+                        </span>
+                    </span>
+                </a>
+                                            <a class="flip-card" href="djelatnosti.html#dimnjaci">
+                    <span class="flip-inner">
+                        <span class="flip-face flip-front">
+                            <span class="card-index">06</span>
+                            <span class="card-title">Dimnjaci</span>
+                        </span>
+                        <span class="flip-face flip-back" aria-hidden="true">
+                            <img src="assets/images/services/dimnjaci.jpg" alt="">
+                            <span class="card-caption">Dimnjaci</span>
+                        </span>
+                    </span>
+                </a>
+                    </div>
+    </section>
+
+        <section class="clients" aria-labelledby="clients-title">
+        <div class="clients-label">
+            <h2 id="clients-title">Klijenti</h2>
+        </div>
+        <div class="marquee">
+            <div class="marquee-track" style="animation-duration: 376s">
+                                    <div class="logo-item"  data-copy="1">
+                        <img src="1_logo%20klijenata/ACI.png" alt="ACI">
+                    </div>
+                                    <div class="logo-item"  data-copy="1">
+                        <img src="1_logo%20klijenata/Aquatherm.png" alt="Aquatherm">
+                    </div>
+                                    <div class="logo-item"  data-copy="1">
+                        <img src="1_logo%20klijenata/Arena.png" alt="Arena">
+                    </div>
+                                    <div class="logo-item"  data-copy="1">
+                        <img src="1_logo%20klijenata/Bina_Istra_Logo_%282024%29.svg.png" alt="Bina Istra Logo (2024).svg">
+                    </div>
+                                    <div class="logo-item"  data-copy="1">
+                        <img src="1_logo%20klijenata/De%20conte.png" alt="De conte">
+                    </div>
+                                    <div class="logo-item"  data-copy="1">
+                        <img src="1_logo%20klijenata/Dom%20zdravlja%20PG%C5%BD.png" alt="Dom zdravlja PGŽ">
+                    </div>
+                                    <div class="logo-item"  data-copy="1">
+                        <img src="1_logo%20klijenata/Elcon%20Geraetebau.png" alt="Elcon Geraetebau">
+                    </div>
+                                    <div class="logo-item"  data-copy="1">
+                        <img src="1_logo%20klijenata/GP%20Krk.png" alt="GP Krk">
+                    </div>
+                                    <div class="logo-item"  data-copy="1">
+                        <img src="1_logo%20klijenata/HDLU.png" alt="HDLU">
+                    </div>
+                                    <div class="logo-item"  data-copy="1">
+                        <img src="1_logo%20klijenata/HEPdd_RGB.png" alt="HEPdd RGB">
+                    </div>
+                                    <div class="logo-item"  data-copy="1">
+                        <img src="1_logo%20klijenata/HGSS.png" alt="HGSS">
+                    </div>
+                                    <div class="logo-item"  data-copy="1">
+                        <img src="1_logo%20klijenata/Hilton%20Rijeka.png" alt="Hilton Rijeka">
+                    </div>
+                                    <div class="logo-item"  data-copy="1">
+                        <img src="1_logo%20klijenata/Hotel%20Kvarner.png" alt="Hotel Kvarner">
+                    </div>
+                                    <div class="logo-item"  data-copy="1">
+                        <img src="1_logo%20klijenata/JGL.png" alt="JGL">
+                    </div>
+                                    <div class="logo-item"  data-copy="1">
+                        <img src="1_logo%20klijenata/Jadran%20hoteli.png" alt="Jadran hoteli">
+                    </div>
+                                    <div class="logo-item"  data-copy="1">
+                        <img src="1_logo%20klijenata/KBC%20RI.png" alt="KBC RI">
+                    </div>
+                                    <div class="logo-item"  data-copy="1">
+                        <img src="1_logo%20klijenata/KBC%20Zagreb.png" alt="KBC Zagreb">
+                    </div>
+                                    <div class="logo-item"  data-copy="1">
+                        <img src="1_logo%20klijenata/Kaufland.png" alt="Kaufland">
+                    </div>
+                                    <div class="logo-item"  data-copy="1">
+                        <img src="1_logo%20klijenata/Lidl.svg" alt="Lidl">
+                    </div>
+                                    <div class="logo-item"  data-copy="1">
+                        <img src="1_logo%20klijenata/MI%20Gradnja.png" alt="MI Gradnja">
+                    </div>
+                                    <div class="logo-item"  data-copy="1">
+                        <img src="1_logo%20klijenata/MUP.svg" alt="MUP">
+                    </div>
+                                    <div class="logo-item"  data-copy="1">
+                        <img src="1_logo%20klijenata/Muller.png" alt="Muller">
+                    </div>
+                                    <div class="logo-item"  data-copy="1">
+                        <img src="1_logo%20klijenata/Novodent.png" alt="Novodent">
+                    </div>
+                                    <div class="logo-item"  data-copy="1">
+                        <img src="1_logo%20klijenata/PDM_Logo.png" alt="PDM Logo">
+                    </div>
+                                    <div class="logo-item"  data-copy="1">
+                        <img src="1_logo%20klijenata/PG%C5%BD.png" alt="PGŽ">
+                    </div>
+                                    <div class="logo-item"  data-copy="1">
+                        <img src="1_logo%20klijenata/Parkovi%20plus.png" alt="Parkovi plus">
+                    </div>
+                                    <div class="logo-item"  data-copy="1">
+                        <img src="1_logo%20klijenata/Plodine.svg" alt="Plodine">
+                    </div>
+                                    <div class="logo-item"  data-copy="1">
+                        <img src="1_logo%20klijenata/Pomorski%20i%20povijesni%20muzej%20Hrvatskog%20primorja.svg" alt="ppmhp_boja">
+                    </div>
+                                    <div class="logo-item"  data-copy="1">
+                        <img src="1_logo%20klijenata/RGW.png" alt="RGW">
+                    </div>
+                                    <div class="logo-item"  data-copy="1">
+                        <img src="1_logo%20klijenata/RH%20MVEP.png" alt="RH MVEP">
+                    </div>
+                                    <div class="logo-item"  data-copy="1">
+                        <img src="1_logo%20klijenata/Sekundar.png" alt="Sekundar">
+                    </div>
+                                    <div class="logo-item"  data-copy="1">
+                        <img src="1_logo%20klijenata/UNIRI.png" alt="UNIRI">
+                    </div>
+                                    <div class="logo-item"  data-copy="1">
+                        <img src="1_logo%20klijenata/Valamar%20hoteli.png" alt="Valamar hoteli">
+                    </div>
+                                    <div class="logo-item"  data-copy="1">
+                        <img src="1_logo%20klijenata/bundekoffice_logo_mali1.png" alt="Bundekoffice logo mali1">
+                    </div>
+                                    <div class="logo-item"  data-copy="1">
+                        <img src="1_logo%20klijenata/eurospin.png" alt="Eurospin">
+                    </div>
+                                    <div class="logo-item"  data-copy="1">
+                        <img src="1_logo%20klijenata/jollyautoline.png" alt="Jollyautoline">
+                    </div>
+                                    <div class="logo-item"  data-copy="1">
+                        <img src="1_logo%20klijenata/klimaoprema.png" alt="Klimaoprema">
+                    </div>
+                                    <div class="logo-item"  data-copy="1">
+                        <img src="1_logo%20klijenata/mack.png" alt="Mack">
+                    </div>
+                                    <div class="logo-item"  data-copy="1">
+                        <img src="1_logo%20klijenata/meneghetti.png" alt="Meneghetti">
+                    </div>
+                                    <div class="logo-item"  data-copy="1">
+                        <img src="1_logo%20klijenata/opcabolnicapula.png" alt="Opcabolnicapula">
+                    </div>
+                                    <div class="logo-item"  data-copy="1">
+                        <img src="1_logo%20klijenata/petrol.png" alt="Petrol">
+                    </div>
+                                    <div class="logo-item"  data-copy="1">
+                        <img src="1_logo%20klijenata/randic%20i%20suradnici.png" alt="Randic i suradnici">
+                    </div>
+                                    <div class="logo-item"  data-copy="1">
+                        <img src="1_logo%20klijenata/ro%C5%BEi%C4%87%20arhitekti.png" alt="Rožić arhitekti">
+                    </div>
+                                    <div class="logo-item"  data-copy="1">
+                        <img src="1_logo%20klijenata/rpk%20design.png" alt="Rpk design">
+                    </div>
+                                    <div class="logo-item"  data-copy="1">
+                        <img src="1_logo%20klijenata/ruting-scaled.png" alt="Ruting scaled">
+                    </div>
+                                    <div class="logo-item"  data-copy="1">
+                        <img src="1_logo%20klijenata/sveucilisteuzagrebu.png" alt="Sveucilisteuzagrebu">
+                    </div>
+                                    <div class="logo-item"  data-copy="1">
+                        <img src="1_logo%20klijenata/zdl_studio_logo.png" alt="Zdl studio logo">
+                    </div>
+                                    <div class="logo-item" aria-hidden="true" data-copy="2">
+                        <img src="1_logo%20klijenata/ACI.png" alt="">
+                    </div>
+                                    <div class="logo-item" aria-hidden="true" data-copy="2">
+                        <img src="1_logo%20klijenata/Aquatherm.png" alt="">
+                    </div>
+                                    <div class="logo-item" aria-hidden="true" data-copy="2">
+                        <img src="1_logo%20klijenata/Arena.png" alt="">
+                    </div>
+                                    <div class="logo-item" aria-hidden="true" data-copy="2">
+                        <img src="1_logo%20klijenata/Bina_Istra_Logo_%282024%29.svg.png" alt="">
+                    </div>
+                                    <div class="logo-item" aria-hidden="true" data-copy="2">
+                        <img src="1_logo%20klijenata/De%20conte.png" alt="">
+                    </div>
+                                    <div class="logo-item" aria-hidden="true" data-copy="2">
+                        <img src="1_logo%20klijenata/Dom%20zdravlja%20PG%C5%BD.png" alt="">
+                    </div>
+                                    <div class="logo-item" aria-hidden="true" data-copy="2">
+                        <img src="1_logo%20klijenata/Elcon%20Geraetebau.png" alt="">
+                    </div>
+                                    <div class="logo-item" aria-hidden="true" data-copy="2">
+                        <img src="1_logo%20klijenata/GP%20Krk.png" alt="">
+                    </div>
+                                    <div class="logo-item" aria-hidden="true" data-copy="2">
+                        <img src="1_logo%20klijenata/HDLU.png" alt="">
+                    </div>
+                                    <div class="logo-item" aria-hidden="true" data-copy="2">
+                        <img src="1_logo%20klijenata/HEPdd_RGB.png" alt="">
+                    </div>
+                                    <div class="logo-item" aria-hidden="true" data-copy="2">
+                        <img src="1_logo%20klijenata/HGSS.png" alt="">
+                    </div>
+                                    <div class="logo-item" aria-hidden="true" data-copy="2">
+                        <img src="1_logo%20klijenata/Hilton%20Rijeka.png" alt="">
+                    </div>
+                                    <div class="logo-item" aria-hidden="true" data-copy="2">
+                        <img src="1_logo%20klijenata/Hotel%20Kvarner.png" alt="">
+                    </div>
+                                    <div class="logo-item" aria-hidden="true" data-copy="2">
+                        <img src="1_logo%20klijenata/JGL.png" alt="">
+                    </div>
+                                    <div class="logo-item" aria-hidden="true" data-copy="2">
+                        <img src="1_logo%20klijenata/Jadran%20hoteli.png" alt="">
+                    </div>
+                                    <div class="logo-item" aria-hidden="true" data-copy="2">
+                        <img src="1_logo%20klijenata/KBC%20RI.png" alt="">
+                    </div>
+                                    <div class="logo-item" aria-hidden="true" data-copy="2">
+                        <img src="1_logo%20klijenata/KBC%20Zagreb.png" alt="">
+                    </div>
+                                    <div class="logo-item" aria-hidden="true" data-copy="2">
+                        <img src="1_logo%20klijenata/Kaufland.png" alt="">
+                    </div>
+                                    <div class="logo-item" aria-hidden="true" data-copy="2">
+                        <img src="1_logo%20klijenata/Lidl.svg" alt="">
+                    </div>
+                                    <div class="logo-item" aria-hidden="true" data-copy="2">
+                        <img src="1_logo%20klijenata/MI%20Gradnja.png" alt="">
+                    </div>
+                                    <div class="logo-item" aria-hidden="true" data-copy="2">
+                        <img src="1_logo%20klijenata/MUP.svg" alt="">
+                    </div>
+                                    <div class="logo-item" aria-hidden="true" data-copy="2">
+                        <img src="1_logo%20klijenata/Muller.png" alt="">
+                    </div>
+                                    <div class="logo-item" aria-hidden="true" data-copy="2">
+                        <img src="1_logo%20klijenata/Novodent.png" alt="">
+                    </div>
+                                    <div class="logo-item" aria-hidden="true" data-copy="2">
+                        <img src="1_logo%20klijenata/PDM_Logo.png" alt="">
+                    </div>
+                                    <div class="logo-item" aria-hidden="true" data-copy="2">
+                        <img src="1_logo%20klijenata/PG%C5%BD.png" alt="">
+                    </div>
+                                    <div class="logo-item" aria-hidden="true" data-copy="2">
+                        <img src="1_logo%20klijenata/Parkovi%20plus.png" alt="">
+                    </div>
+                                    <div class="logo-item" aria-hidden="true" data-copy="2">
+                        <img src="1_logo%20klijenata/Plodine.svg" alt="">
+                    </div>
+                                    <div class="logo-item" aria-hidden="true" data-copy="2">
+                        <img src="1_logo%20klijenata/Pomorski%20i%20povijesni%20muzej%20Hrvatskog%20primorja.svg" alt="">
+                    </div>
+                                    <div class="logo-item" aria-hidden="true" data-copy="2">
+                        <img src="1_logo%20klijenata/RGW.png" alt="">
+                    </div>
+                                    <div class="logo-item" aria-hidden="true" data-copy="2">
+                        <img src="1_logo%20klijenata/RH%20MVEP.png" alt="">
+                    </div>
+                                    <div class="logo-item" aria-hidden="true" data-copy="2">
+                        <img src="1_logo%20klijenata/Sekundar.png" alt="">
+                    </div>
+                                    <div class="logo-item" aria-hidden="true" data-copy="2">
+                        <img src="1_logo%20klijenata/UNIRI.png" alt="">
+                    </div>
+                                    <div class="logo-item" aria-hidden="true" data-copy="2">
+                        <img src="1_logo%20klijenata/Valamar%20hoteli.png" alt="">
+                    </div>
+                                    <div class="logo-item" aria-hidden="true" data-copy="2">
+                        <img src="1_logo%20klijenata/bundekoffice_logo_mali1.png" alt="">
+                    </div>
+                                    <div class="logo-item" aria-hidden="true" data-copy="2">
+                        <img src="1_logo%20klijenata/eurospin.png" alt="">
+                    </div>
+                                    <div class="logo-item" aria-hidden="true" data-copy="2">
+                        <img src="1_logo%20klijenata/jollyautoline.png" alt="">
+                    </div>
+                                    <div class="logo-item" aria-hidden="true" data-copy="2">
+                        <img src="1_logo%20klijenata/klimaoprema.png" alt="">
+                    </div>
+                                    <div class="logo-item" aria-hidden="true" data-copy="2">
+                        <img src="1_logo%20klijenata/mack.png" alt="">
+                    </div>
+                                    <div class="logo-item" aria-hidden="true" data-copy="2">
+                        <img src="1_logo%20klijenata/meneghetti.png" alt="">
+                    </div>
+                                    <div class="logo-item" aria-hidden="true" data-copy="2">
+                        <img src="1_logo%20klijenata/opcabolnicapula.png" alt="">
+                    </div>
+                                    <div class="logo-item" aria-hidden="true" data-copy="2">
+                        <img src="1_logo%20klijenata/petrol.png" alt="">
+                    </div>
+                                    <div class="logo-item" aria-hidden="true" data-copy="2">
+                        <img src="1_logo%20klijenata/randic%20i%20suradnici.png" alt="">
+                    </div>
+                                    <div class="logo-item" aria-hidden="true" data-copy="2">
+                        <img src="1_logo%20klijenata/ro%C5%BEi%C4%87%20arhitekti.png" alt="">
+                    </div>
+                                    <div class="logo-item" aria-hidden="true" data-copy="2">
+                        <img src="1_logo%20klijenata/rpk%20design.png" alt="">
+                    </div>
+                                    <div class="logo-item" aria-hidden="true" data-copy="2">
+                        <img src="1_logo%20klijenata/ruting-scaled.png" alt="">
+                    </div>
+                                    <div class="logo-item" aria-hidden="true" data-copy="2">
+                        <img src="1_logo%20klijenata/sveucilisteuzagrebu.png" alt="">
+                    </div>
+                                    <div class="logo-item" aria-hidden="true" data-copy="2">
+                        <img src="1_logo%20klijenata/zdl_studio_logo.png" alt="">
+                    </div>
+                            </div>
+        </div>
+    </section>
+    </main>
+<footer class="site-footer">
+    <div class="footer-inner">
+        <div class="footer-brand">
+            <p class="footer-name">RIJEKAPROJEKT - ENERGETIKA d.o.o.</p>
+            <p class="footer-note">za projektiranje, nadzor i izvođenje</p>
+            <p class="footer-address">
+                Moše Alabaharija 10a, 51000 Rijeka<br>
+                <a href="tel:+38551344262">051 344 262</a>
+                · <a href="mailto:info@rijekaprojekt-energetika.hr">info@rijekaprojekt-energetika.hr</a>
+            </p>
+            <p class="footer-contact"><a href="kontakt.html#kontakt-obrazac">Pošaljite poruku</a></p>
+        </div>
+        <dl class="legal">
+            <div>
+                <dt>MBS</dt>
+                <dd>040051010</dd>
+            </div>
+            <div>
+                <dt>OIB</dt>
+                <dd>96541170357</dd>
+            </div>
+            <div>
+                <dt>IBAN</dt>
+                <dd>HR2324020061100393901</dd>
+            </div>
+        </dl>
+    </div>
+    <p class="footer-copy">© 2026 RIJEKAPROJEKT - ENERGETIKA d.o.o.</p>
+</footer>
+<script src="assets/js/main.js?v=1795104885"></script>
+</body>
+</html>
+    
