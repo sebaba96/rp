@@ -202,8 +202,10 @@ body::before {
 
 #hero-model {
     position: absolute;
-    inset: 0;
-    width: 100%;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 40%;
     height: 100%;
     background: var(--mist);
     --poster-color: transparent;
@@ -220,8 +222,8 @@ body::before {
     inset: 0;
     pointer-events: none;
     background:
-        linear-gradient(90deg, rgba(255, 255, 255, 0.96) 0%, rgba(255, 255, 255, 0.86) 32%, rgba(238, 243, 246, 0.28) 56%, rgba(238, 243, 246, 0) 74%),
-        linear-gradient(180deg, rgba(255, 255, 255, 0.7), transparent 18%);
+        linear-gradient(90deg, transparent 0 56%, rgba(238, 243, 246, 0.92) 60%, rgba(238, 243, 246, 0) 72%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.45), transparent 14%);
 }
 
 .hero-copy {
@@ -230,7 +232,8 @@ body::before {
     min-height: 100svh;
     display: flex;
     align-items: center;
-    padding: calc(var(--nav) + 1rem) 6vw 4rem;
+    justify-content: flex-start;
+    padding: calc(var(--nav) + 1rem) 30% 4rem 6vw;
     pointer-events: none;
 }
 
@@ -240,11 +243,13 @@ body::before {
     top: 0;
     bottom: 0;
     left: 0;
-    width: 42%;
+    width: 70%;
 }
 
 .hero-copy-inner {
-    width: min(40rem, 100%);
+    width: min(60rem, 100%);
+    margin-right: auto;
+    text-align: left;
     border-left: 3px solid var(--blue-deep);
     padding-left: 1.3rem;
 }
@@ -271,7 +276,7 @@ body::before {
 
 .hero-copy p {
     margin: 0;
-    max-width: 38rem;
+    max-width: 100%;
     font-size: 1.05rem;
     line-height: 1.6;
     color: var(--ink);
@@ -996,16 +1001,45 @@ textarea:focus-visible {
         text-underline-offset: 0.35em;
     }
 
-    .hero-scrim {
-        background: linear-gradient(180deg, rgba(238, 243, 246, 0.2) 8%, rgba(255, 255, 255, 0.94) 62%);
+    .hero {
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+        overflow: visible;
     }
 
-    .hero-copy { align-items: flex-end; }
+    .hero-scrim,
+    .hero-scroll { display: none; }
 
-    .hero-scroll {
-        top: auto;
+    .hero-copy {
+        order: 1;
+        z-index: 2;
+        min-height: 0;
+        align-items: flex-start;
+        justify-content: flex-start;
+        padding: calc(var(--nav) + 1.2rem) 6vw 0;
+    }
+
+    #hero-model {
+        order: 2;
+        position: relative;
+        z-index: 1;
+        inset: auto;
         width: 100%;
-        height: 42%;
+        height: 72vw;
+        min-height: 18rem;
+        max-height: 28rem;
+        margin-top: calc(min(28rem, max(18rem, 72vw)) * -0.2);
+    }
+
+    .hero-loader {
+        order: 3;
+        position: relative;
+        left: auto;
+        top: auto;
+        bottom: auto;
+        width: calc(100% - 12vw);
+        margin: 0 6vw 1rem;
     }
 
     .hero h1 { font-size: 2.5rem; }
@@ -1026,7 +1060,40 @@ textarea:focus-visible {
     .clients-label,
     .work-head { flex-direction: column; align-items: flex-start; }
 
-    .flip-card { height: 16.5rem; }
+    .flip-card {
+        height: 16.5rem;
+        perspective: none;
+        position: relative;
+        z-index: 0;
+        overflow: hidden;
+        isolation: isolate;
+    }
+
+    .flip-inner,
+    .flip-card:focus-visible .flip-inner,
+    .flip-card.is-flipped .flip-inner {
+        transform: none;
+        transform-style: flat;
+    }
+
+    .flip-face { backface-visibility: visible; }
+
+    .flip-back {
+        z-index: 0;
+        transform: none;
+    }
+
+    .flip-back img { opacity: 0.85; }
+
+    .card-caption { display: none; }
+
+    .flip-front {
+        z-index: 2;
+        transform: none;
+        background:
+            linear-gradient(135deg, transparent 0 18px, var(--blue) 18px 19px, transparent 19px),
+            rgba(255, 255, 255, 0.72);
+    }
 }
 
 html.reveal-ready .reveal {
