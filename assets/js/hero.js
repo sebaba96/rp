@@ -1,61 +1,26 @@
-import * as THREE from 'three';
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+const ModelViewer = customElements.get('model-viewer');
+if (ModelViewer) {
+    ModelViewer.minimumRenderScale = 1;
+}
 
-const canvas = document.querySelector('#hero-canvas');
+const viewer = document.querySelector('#hero-model');
 
-if (canvas instanceof HTMLCanvasElement) {
-    initHero(canvas);
+if (viewer) {
+    initHero(viewer);
 }
 
 /**
- * Builds the boiler-room viewer, loads the glTF export, and keeps it framed in the hero.
+ * Shows load progress and frames the boiler once model-viewer has it.
  */
-function initHero(canvas) {
-    const hero = canvas.parentElement;
+function initHero(viewer) {
     const loaderBox = document.querySelector('#hero-loader');
     const loaderLabel = document.querySelector('#hero-loader-label');
     const loaderBar = document.querySelector('#hero-loader-bar');
-    const modelUrl = canvas.dataset.model;
-
-    const renderer = new THREE.WebGLRenderer({
-        canvas,
-        antialias: true,
-        alpha: false,
-        powerPreference: 'high-performance',
-    });
-    renderer.outputColorSpace = THREE.SRGBColorSpace;
-    renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.02;
-    renderer.setClearColor(0xeef3f6, 1);
-
-    const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0xeef3f6);
-
-    const camera = new THREE.PerspectiveCamera(32, 1, 0.01, 100);
-    const controls = new OrbitControls(camera, canvas);
-    controls.enableDamping = true;
-    controls.enablePan = false;
-    controls.autoRotate = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    controls.autoRotateSpeed = 0.45;
-
-    scene.add(new THREE.HemisphereLight(0xf4f8fb, 0xc5d3de, 1.05));
-    const sun = new THREE.DirectionalLight(0xffffff, 1.7);
-    sun.position.set(6, 10, 8);
-    scene.add(sun);
-
-    const environment = new THREE.PMREMGenerator(renderer);
-    scene.environment = environment.fromScene(new RoomEnvironment(), 0.04).texture;
-    environment.dispose();
-
-    resizeHero(renderer, camera, hero);
 
     /**
      * Writes the download percentage into the hero loading line.
      */
-    function showProgress(loaded, total) {
-        const percent = total ? Math.round((loaded / total) * 100) : 0;
+    function showProgress(percent) {
         if (loaderLabel) {
             loaderLabel.textContent = 'Učitavanje kotlovnice · ' + percent + '%';
         }
@@ -64,74 +29,23 @@ function initHero(canvas) {
         }
     }
 
-    /**
-     * Hides the loading line once the model is on screen.
-     */
-    function finishLoading() {
-        loaderBox?.classList.add('is-done');
-    }
+    viewer.addEventListener('progress', (event) => {
+        showProgress(Math.round((event.detail?.totalProgress ?? 0) * 100));
+    });
 
-    /**
-     * Replaces the loading line with a short failure message.
-     */
-    function showError(message) {
+    viewer.addEventListener('load', () => {
+        frameModel(viewer);
+        showProgress(100);
+        loaderBox?.classList.add('is-done');
+        prepareMaterials(viewer);
+    });
+
+    viewer.addEventListener('error', () => {
         if (loaderLabel) {
-            loaderLabel.textContent = message;
+            loaderLabel.textContent = 'Model kotlovnice nije moguće prikazati.';
         }
         if (loaderBar) {
             loaderBar.style.width = '0';
-        }
-    }
-
-    if (!modelUrl) {
-        showError('Putanja do modela kotlovnice nije postavljena.');
-        return;
-    }
-
-    const manager = new THREE.LoadingManager();
-    manager.onProgress = (_url, loaded, total) => showProgress(loaded, total);
-
-    const loader = new GLTFLoader(manager);
-    loader.load(
-        modelUrl,
-        (gltf) => {
-            const model = gltf.scene;
-            prepareMaterials(model);
-            scene.add(model);
-            frameModel(camera, controls, model);
-            finishLoading();
-        },
-        (event) => {
-            if (event.total) {
-                showProgress(event.loaded, event.total);
-            }
-        },
-        () => {
-            showError('Model kotlovnice nije moguće prikazati.');
-        }
-    );
-
-    let running = true;
-
-    /**
-     * Draws the next frame while the tab stays visible.
-     */
-    function animate() {
-        if (!running) {
-            return;
-        }
-        controls.update();
-        renderer.render(scene, camera);
-        requestAnimationFrame(animate);
-    }
-
-    animate();
-
-    window.addEventListener('resize', () => resizeHero(renderer, camera, hero));
-    document.addEventListener('visibilitychange', () => {
-        running = !document.hidden;
-        if (running) {
-            animate();
         }
     });
 }
@@ -139,101 +53,153 @@ function initHero(canvas) {
 /**
  * Draws both sides of CAD surfaces so thin pipes stay visible from the camera.
  */
-function prepareMaterials(model) {
-    model.traverse((child) => {
-        if (!child.isMesh) {
-            return;
-        }
-        const materials = Array.isArray(child.material) ? child.material : [child.material];
-        materials.forEach((material) => {
-            if (material) {
-                material.side = THREE.DoubleSide;
-            }
-        });
-    });
-}
+async function prepareMaterials(viewer) {
+    const materials = viewer.model?.materials ?? [];
 
-/**
- * Builds a box around the dense part of the export, leaving out stray high and low parts.
- */
-function contentBox(model) {
-    const boxes = [];
-    model.updateMatrixWorld(true);
-
-    model.traverse((child) => {
-        if (!child.isMesh || !child.geometry) {
-            return;
+    await Promise.all(materials.map(async (material) => {
+        try {
+            await material.ensureLoaded();
+            material.setDoubleSided(true);
+        } catch (error) {
+            // One unfinished material should not hide the rest of the room.
         }
-        if (!child.geometry.boundingBox) {
-            child.geometry.computeBoundingBox();
-        }
-        if (!child.geometry.boundingBox) {
-            return;
-        }
-        const box = child.geometry.boundingBox.clone().applyMatrix4(child.matrixWorld);
-        if (box.getSize(new THREE.Vector3()).lengthSq() === 0) {
-            return;
-        }
-        boxes.push(box);
-    });
-
-    if (boxes.length === 0) {
-        return new THREE.Box3().setFromObject(model);
-    }
-
-    const heights = boxes
-        .map((box) => box.getCenter(new THREE.Vector3()).y)
-        .sort((a, b) => a - b);
-    const low = heights[Math.floor(heights.length * 0.04)];
-    const high = heights[Math.floor(heights.length * 0.9)];
-    const kept = new THREE.Box3();
-
-    boxes.forEach((box) => {
-        const y = box.getCenter(new THREE.Vector3()).y;
-        if (y >= low && y <= high) {
-            kept.union(box);
-        }
-    });
-
-    return kept.isEmpty() ? new THREE.Box3().setFromObject(model) : kept;
+    }));
 }
 
 /**
  * Places the camera so the boiler room sits right of the headline.
  */
-function frameModel(camera, controls, model) {
-    const box = contentBox(model);
-    const size = box.getSize(new THREE.Vector3());
-    const center = box.getCenter(new THREE.Vector3());
+function frameModel(viewer) {
+    const box = contentBox(viewer);
+    const center = box?.center ?? viewer.getBoundingBoxCenter();
+    const size = box?.size ?? viewer.getDimensions();
     const radius = Math.max(size.x, size.y, size.z) * 0.5;
 
     if (!Number.isFinite(radius) || radius === 0) {
         return;
     }
 
-    const distance = (radius / Math.sin((camera.fov * Math.PI) / 360)) * 0.92;
-    camera.near = Math.max(distance / 200, 0.001);
-    camera.far = distance * 40;
-    camera.position.set(
-        center.x + distance * 0.15,
-        center.y + radius * 0.15,
-        center.z + distance
-    );
-    camera.updateProjectionMatrix();
-    controls.target.set(center.x - radius * 0.55, center.y + radius * 0.16, center.z);
-    controls.minDistance = distance * 0.45;
-    controls.maxDistance = distance * 2.8;
-    controls.update();
+    const distance = (radius / Math.sin((32 * Math.PI) / 360)) * 0.92;
+    const dx = distance * 0.15 + radius * 0.55;
+    const dy = -radius * 0.01;
+    const orbitRadius = Math.hypot(dx, dy, distance);
+    const theta = (Math.atan2(dx, distance) * 180) / Math.PI;
+    const phi = (Math.acos(dy / orbitRadius) * 180) / Math.PI;
+
+    viewer.minCameraOrbit = `auto auto ${distance * 0.45}m`;
+    viewer.maxCameraOrbit = `auto auto ${distance * 2.8}m`;
+    viewer.cameraTarget = `${center.x - radius * 0.55}m ${center.y + radius * 0.16}m ${center.z}m`;
+    viewer.cameraOrbit = `${theta}deg ${phi}deg ${orbitRadius}m`;
+    viewer.fieldOfView = '32deg';
+    viewer.jumpCameraToGoal();
+    requestAnimationFrame(() => viewer.jumpCameraToGoal());
 }
 
 /**
- * Matches the drawing buffer to the hero size without letting the canvas override CSS.
+ * Builds a box around the dense part of the export, leaving out stray high and low parts.
  */
-function resizeHero(renderer, camera, hero) {
-    const width = hero?.clientWidth || window.innerWidth;
-    const height = hero?.clientHeight || window.innerHeight;
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
-    renderer.setSize(width, height, false);
-    camera.aspect = width / Math.max(height, 1);
-    camera.updateProjectionMatrix();
+function contentBox(viewer) {
+    const sceneSymbol = Object.getOwnPropertySymbols(viewer)
+        .find((symbol) => String(symbol) === 'Symbol(scene)');
+    const root = sceneSymbol ? viewer[sceneSymbol]?.target?.children?.[0] : null;
+
+    if (!root?.traverse || !root.matrixWorld?.clone) {
+        return null;
+    }
+
+    root.updateWorldMatrix(true, true);
+    const inverse = root.matrixWorld.clone().invert();
+    const boxes = [];
+
+    root.traverse((child) => {
+        if (!child.isMesh || !child.geometry) {
+            return;
+        }
+
+        if (!child.geometry.boundingBox) {
+            child.geometry.computeBoundingBox();
+        }
+
+        const bounds = child.geometry.boundingBox;
+        if (!bounds) {
+            return;
+        }
+
+        const m = child.matrixWorld.clone().premultiply(inverse).elements;
+        let minX = Infinity;
+        let minY = Infinity;
+        let minZ = Infinity;
+        let maxX = -Infinity;
+        let maxY = -Infinity;
+        let maxZ = -Infinity;
+
+        [bounds.min.x, bounds.max.x].forEach((x) => {
+            [bounds.min.y, bounds.max.y].forEach((y) => {
+                [bounds.min.z, bounds.max.z].forEach((z) => {
+                    const wx = m[0] * x + m[4] * y + m[8] * z + m[12];
+                    const wy = m[1] * x + m[5] * y + m[9] * z + m[13];
+                    const wz = m[2] * x + m[6] * y + m[10] * z + m[14];
+                    minX = Math.min(minX, wx);
+                    minY = Math.min(minY, wy);
+                    minZ = Math.min(minZ, wz);
+                    maxX = Math.max(maxX, wx);
+                    maxY = Math.max(maxY, wy);
+                    maxZ = Math.max(maxZ, wz);
+                });
+            });
+        });
+
+        if ((maxX - minX) ** 2 + (maxY - minY) ** 2 + (maxZ - minZ) ** 2 === 0) {
+            return;
+        }
+
+        boxes.push({
+            minX, minY, minZ, maxX, maxY, maxZ,
+            cy: (minY + maxY) / 2,
+        });
+    });
+
+    if (boxes.length === 0) {
+        return null;
+    }
+
+    const heights = boxes.map((box) => box.cy).sort((a, b) => a - b);
+    const low = heights[Math.floor(heights.length * 0.04)];
+    const high = heights[Math.floor(heights.length * 0.9)];
+    let minX = Infinity;
+    let minY = Infinity;
+    let minZ = Infinity;
+    let maxX = -Infinity;
+    let maxY = -Infinity;
+    let maxZ = -Infinity;
+
+    boxes.forEach((box) => {
+        if (box.cy < low || box.cy > high) {
+            return;
+        }
+
+        minX = Math.min(minX, box.minX);
+        minY = Math.min(minY, box.minY);
+        minZ = Math.min(minZ, box.minZ);
+        maxX = Math.max(maxX, box.maxX);
+        maxY = Math.max(maxY, box.maxY);
+        maxZ = Math.max(maxZ, box.maxZ);
+    });
+
+    if (!Number.isFinite(minX)) {
+        return null;
+    }
+
+    return {
+        center: {
+            x: (minX + maxX) / 2,
+            y: (minY + maxY) / 2,
+            z: (minZ + maxZ) / 2,
+        },
+        size: {
+            x: maxX - minX,
+            y: maxY - minY,
+            z: maxZ - minZ,
+        },
+    };
 }
