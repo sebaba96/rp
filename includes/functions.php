@@ -410,15 +410,8 @@ function render_header(string $title, string $description, string $page, bool $w
     <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;500;600;700&family=Jura:wght@500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css?v=<?= e((string) filemtime(dirname(__DIR__) . '/assets/css/style.css')) ?>">
     <?php if ($withHero): ?>
-    <script type="importmap">
-    {
-        "imports": {
-            "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
-            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
-        }
-    }
-    </script>
-    <script type="module" src="assets/js/hero.js"></script>
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.4.0/model-viewer.min.js"></script>
+    <script type="module" src="assets/js/hero.js?v=<?= e((string) filemtime(dirname(__DIR__) . '/assets/js/hero.js')) ?>"></script>
     <?php endif; ?>
 </head>
 <body class="page-<?= e($page) ?>">
