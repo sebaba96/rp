@@ -18,11 +18,18 @@ render_header(
 ?>
 <main id="sadrzaj">
     <section class="hero" aria-label="Uvod">
-        <canvas
-            id="hero-canvas"
-            data-model="STR_kotlovnica_export/result.gltf"
-            aria-label="Trodimenzionalni prikaz kotlovnice"
-        ></canvas>
+        <model-viewer
+            id="hero-model"
+            src="STR_kotlovnica_export/result.gltf"
+            alt="Trodimenzionalni prikaz kotlovnice"
+            camera-controls
+            interaction-prompt="none"
+            tone-mapping="aces"
+            exposure="1.02"
+            shadow-intensity="0"
+            environment-image="neutral"
+            field-of-view="32deg"
+        ></model-viewer>
         <div class="hero-scrim" aria-hidden="true"></div>
         <div class="hero-copy">
             <div class="hero-copy-inner">
@@ -33,6 +40,7 @@ render_header(
                 <p><?= e((string) ($hero['text'] ?? '')) ?></p>
             </div>
         </div>
+        <div class="hero-scroll" aria-hidden="true"></div>
         <div class="hero-loader" id="hero-loader">
             <p id="hero-loader-label">Učitavanje kotlovnice</p>
             <div class="hero-loader-track" aria-hidden="true"><span id="hero-loader-bar"></span></div>
