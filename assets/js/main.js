@@ -1,7 +1,6 @@
 initNavigation();
 initNavContrast();
 initServiceTabs();
-initTouchFlip();
 initContactEmail();
 initScrollFocus();
 
@@ -127,20 +126,53 @@ function initServiceTabs() {
     const tabs = [...root.querySelectorAll('[role="tab"]')];
     const panels = [...root.querySelectorAll('[role="tabpanel"]')];
     const slugs = tabs.map((tab) => tab.dataset.slug || '');
+    let opened = false;
+
+    /**
+     * Scrolls the tab strip so the selected tab sits in view, then focuses it.
+     */
+    function revealTab(tab, immediate) {
+        const list = tab.closest('.tablist');
+
+        if (list) {
+            const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const left = tab.offsetLeft - Math.max(0, (list.clientWidth - tab.offsetWidth) / 2);
+
+            list.scrollTo({
+                left: Math.max(0, left),
+                behavior: immediate || reduce ? 'auto' : 'smooth',
+            });
+        }
+
+        if (document.activeElement !== tab) {
+            tab.focus({ preventScroll: true });
+        }
+    }
 
     /**
      * Selects a service tab and optionally writes its slug into the page address.
      */
     function activate(slug, updateHash) {
+        let selectedTab = null;
+
         tabs.forEach((tab) => {
             const selected = tab.dataset.slug === slug;
             tab.setAttribute('aria-selected', selected ? 'true' : 'false');
             tab.tabIndex = selected ? 0 : -1;
+
+            if (selected) {
+                selectedTab = tab;
+            }
         });
 
         panels.forEach((panel) => {
             panel.hidden = panel.id !== 'panel-' + slug;
         });
+
+        if (selectedTab) {
+            revealTab(selectedTab, !opened);
+            opened = true;
+        }
 
         if (updateHash) {
             history.replaceState(null, '', '#' + slug);
@@ -149,6 +181,7 @@ function initServiceTabs() {
 
     const fromHash = window.location.hash.replace('#', '');
     activate(slugs.includes(fromHash) ? fromHash : slugs[0], false);
+    initTabDrag(root.querySelector('.tablist'));
 
     tabs.forEach((tab) => {
         tab.addEventListener('click', () => activate(tab.dataset.slug || '', true));
@@ -172,6 +205,92 @@ function initServiceTabs() {
         if (slugs.includes(slug)) {
             activate(slug, false);
         }
+    });
+}
+
+/**
+ * Lets the tab strip be dragged sideways on a narrow screen.
+ * A tap still reaches the button; only a real sideways drag is swallowed.
+ */
+function initTabDrag(list) {
+    if (!list) {
+        return;
+    }
+
+    const narrow = window.matchMedia('(max-width: 760px)');
+    let pointerId = null;
+    let startX = 0;
+    let startScroll = 0;
+    let dragged = false;
+
+    list.addEventListener('pointerdown', (event) => {
+        if (!narrow.matches || event.pointerType === 'touch' || event.button !== 0) {
+            return;
+        }
+
+        if (list.scrollWidth <= list.clientWidth) {
+            return;
+        }
+
+        pointerId = event.pointerId;
+        startX = event.clientX;
+        startScroll = list.scrollLeft;
+        dragged = false;
+    });
+
+    window.addEventListener('pointermove', (event) => {
+        if (event.pointerId !== pointerId) {
+            return;
+        }
+
+        const distance = event.clientX - startX;
+
+        if (Math.abs(distance) < 10) {
+            return;
+        }
+
+        dragged = true;
+        list.classList.add('is-dragging');
+        list.scrollLeft = startScroll - distance;
+    });
+
+    /**
+     * Stops tracking the pointer. A drag blocks the click that follows it.
+     */
+    function finish(event) {
+        if (event.pointerId !== pointerId) {
+            return;
+        }
+
+        pointerId = null;
+        list.classList.remove('is-dragging');
+
+        if (!dragged) {
+            return;
+        }
+
+        const blockClick = (clickEvent) => {
+            clickEvent.preventDefault();
+            clickEvent.stopPropagation();
+            dragged = false;
+        };
+
+        list.addEventListener('click', blockClick, { capture: true, once: true });
+        window.setTimeout(() => {
+            list.removeEventListener('click', blockClick, true);
+            dragged = false;
+        }, 0);
+    }
+
+    window.addEventListener('pointerup', finish);
+    window.addEventListener('pointercancel', (event) => {
+        if (event.pointerId !== pointerId) {
+            return;
+        }
+
+        pointerId = null;
+        dragged = false;
+        list.classList.remove('is-dragging');
     });
 }
 
@@ -215,30 +334,27 @@ function initContactEmail() {
     });
 
     form.addEventListener('submit', (event) => {
+        event.preventDefault();
+
         if (!validateEmail()) {
-            event.preventDefault();
             input.focus();
+            return;
         }
-    });
-}
 
-/**
- * On touch screens, the first tap flips a card and the next tap opens the service.
- */
-function initTouchFlip() {
-    if (window.matchMedia('(hover: hover)').matches) {
-        return;
-    }
+        const name = document.querySelector('#ime');
+        const phone = document.querySelector('#telefon');
+        const message = document.querySelector('#poruka');
+        const body = [
+            name instanceof HTMLInputElement ? 'Ime: ' + name.value.trim() : '',
+            'E-pošta: ' + input.value.trim(),
+            phone instanceof HTMLInputElement && phone.value.trim() !== '' ? 'Telefon: ' + phone.value.trim() : '',
+            '',
+            message instanceof HTMLTextAreaElement ? message.value.trim() : '',
+        ].filter((line, index, lines) => line !== '' || lines[index - 1] !== '').join('\n');
 
-    document.querySelectorAll('.flip-card').forEach((card) => {
-        card.addEventListener('click', (event) => {
-            if (!card.classList.contains('is-flipped')) {
-                event.preventDefault();
-                document.querySelectorAll('.flip-card.is-flipped').forEach((other) => {
-                    other.classList.remove('is-flipped');
-                });
-                card.classList.add('is-flipped');
-            }
-        });
+        window.location.href = 'mailto:info@rijekaprojekt-energetika.hr?subject='
+            + encodeURIComponent('Poruka s web stranice')
+            + '&body='
+            + encodeURIComponent(body);
     });
 }
