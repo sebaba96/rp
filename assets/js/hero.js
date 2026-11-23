@@ -67,7 +67,7 @@ async function prepareMaterials(viewer) {
 }
 
 /**
- * Places the camera so the boiler room sits right of the headline.
+ * Frames the boiler inside its own panel. Wide screens give that panel the right 40%.
  */
 function frameModel(viewer) {
     const box = contentBox(viewer);
@@ -79,17 +79,27 @@ function frameModel(viewer) {
         return;
     }
 
-    const distance = (radius / Math.sin((32 * Math.PI) / 360)) * 0.92;
-    const dx = distance * 0.15 + radius * 0.55;
-    const dy = -radius * 0.01;
-    const orbitRadius = Math.hypot(dx, dy, distance);
-    const theta = (Math.atan2(dx, distance) * 180) / Math.PI;
-    const phi = (Math.acos(dy / orbitRadius) * 180) / Math.PI;
+    const fov = (32 * Math.PI) / 180;
+    const aspect = viewer.clientWidth / Math.max(viewer.clientHeight, 1);
+    const tall = size.y * 0.5;
+    const wide = Math.max(size.x, size.z) * 0.5;
+    const narrow = window.matchMedia('(max-width: 760px)').matches;
+    let distance = (tall / Math.sin(fov / 2)) * (narrow ? 1.15 : 0.96);
+
+    if (aspect > 0) {
+        const horizontal = 2 * Math.atan(Math.tan(fov / 2) * aspect);
+        const fitWidth = (wide / Math.sin(horizontal / 2)) * (narrow ? 1.08 : 0.9);
+        distance = Math.max(distance, fitWidth);
+    }
+
+    const dy = narrow ? radius * 0.08 : 0;
+    const orbitRadius = Math.hypot(dy, distance);
+    const phi = (Math.acos(Math.max(-1, Math.min(1, dy / orbitRadius))) * 180) / Math.PI;
 
     viewer.minCameraOrbit = `auto auto ${distance * 0.45}m`;
     viewer.maxCameraOrbit = `auto auto ${distance * 2.8}m`;
-    viewer.cameraTarget = `${center.x - radius * 0.55}m ${center.y + radius * 0.16}m ${center.z}m`;
-    viewer.cameraOrbit = `${theta}deg ${phi}deg ${orbitRadius}m`;
+    viewer.cameraTarget = `${center.x}m ${center.y}m ${center.z}m`;
+    viewer.cameraOrbit = `0deg ${phi}deg ${orbitRadius}m`;
     viewer.fieldOfView = '32deg';
     viewer.jumpCameraToGoal();
     requestAnimationFrame(() => viewer.jumpCameraToGoal());
